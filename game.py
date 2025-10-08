@@ -83,6 +83,14 @@ def battle(player, enemy):
 
         turn += 1
 
+    if not player.is_alive():
+        print("You lost")
+
+    if not enemy.is_alive():
+        print(f"You defeated {enemy.name}")
+        sleep(1)
+        print("You win")
+
 
 def menu_act():
     while True:
