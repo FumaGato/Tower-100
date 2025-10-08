@@ -109,9 +109,8 @@ player_name = input("Enter your name: ")
 player = Player(player_name, 100, 25)
 
 # Enemies
-roco = Enemy("Roco", 40, 20)
-dodo = Enemy("Dodo", 60, 10)
-fufu = Enemy("Fufu", 20, 50)
+roco = Enemy("Roco", 45, 35)
+dodo = Enemy("Dodo", 60, 20)
 
 # Menu
 print("Escape from This Place But You Can't See Anything Game")
@@ -122,7 +121,7 @@ print("(3) Exit")
 menu = menu_act()
 
 if menu == 1:
-    battle(player, roco)
+    battle(player, dodo)
 elif menu == 2:
     print(player.atk)
 elif menu == 3:
