@@ -25,6 +25,9 @@ class Player(Character):
         super().__init__(name, hp, atk)
         self.inv = inv
 
+    def heal(self, amount):
+        self.hp += amount
+
 
 class Enemy(Character):
 
