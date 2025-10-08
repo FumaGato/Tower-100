@@ -11,21 +11,25 @@ class Character:
         self.atk = atk
 
     def take_dmg(self, amount):
+
         self.hp -= amount
         if self.hp < 0:
             self.hp = 0
 
     def is_alive(self):
+
         return self.hp > 0
 
 
 class Player(Character):
 
     def __init__(self, name, hp, atk, inv):
+
         super().__init__(name, hp, atk)
         self.inv = inv
 
     def heal(self, amount):
+
         self.hp += amount
 
 
@@ -33,17 +37,20 @@ class Enemy(Character):
 
     def __init__(self, name, hp, atk, desc):
         super().__init__(name, hp, atk)
+
         self.desc = desc
 
 
 class Item():
 
     def __init__(self, name, heal_amount):
+
         self.name = name
         self.heal_amount = heal_amount
 
 
 def battle(player, enemy):
+
     print("An enemy is attacking!")
     sleep(1)
     print("")
@@ -128,6 +135,7 @@ def battle(player, enemy):
 
 
 def menu_act():
+
     while True:
         value = input(">")
         if value == "":
