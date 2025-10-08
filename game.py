@@ -57,6 +57,7 @@ class Item():
 
 def battle(player, enemy):
 
+    print("")
     print("An enemy is attacking!")
     sleep(1)
     print("")
@@ -124,11 +125,14 @@ def battle(player, enemy):
             sleep(1)
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
+                sleep(1)
                 break
             else:
                 print(f"{player.name} failed to escape!")
+                print("")
         else:
             print("Invalid action, you lost your turn.")
+            print("")
 
         sleep(1)
 
@@ -150,6 +154,7 @@ def battle(player, enemy):
             print(f"{player.name} defeated {enemy.name}.")
             sleep(1)
             print("You win the battle!")
+            sleep(1)
             break
 
         turn += 1
@@ -168,7 +173,32 @@ def menu_act():
                 print("Invalid action.")
 
 
-# Items
+def game():
+
+    floor = 0
+
+    # print("")
+    # print("So bassicaly you decided to climb this tower...")
+    # sleep(1)
+    # print("And...")
+    # sleep(1)
+    # print("Yeah...")
+    # sleep(1)
+    # print("")
+
+    while True:
+        print("")
+        walk = input("Press [Enter] to go to the next floor.")
+        floor_encounter = random.random()
+
+        if floor_encounter < 0.5:
+            battle(player, encounter)
+        else:
+            print("")
+            print("There's no one.")
+            sleep(1)
+
+            # Items
 bread = Item("Bread", 40)
 bandage = Item("Bandage", 55)
 stick = Item("Stick", 0)
@@ -195,17 +225,15 @@ print("--- Tower 100 ---")
 print("[1] Start")
 print("[2] Tutorial")
 print("[3] Exit")
+print("")
 
 while True:
     menu = menu_act()
     if menu == 1:
-        print("You're stuck in this place")
-        sleep(1)
-        print("You must get out of here")
-        sleep(1)
-        walk = input("Press enter to continue walking")
-        battle(player, encounter)
+        game()
     elif menu == 2:
+        print("")
         print("There's no tutorial yet")
+        print("")
     elif menu == 3:
         break
