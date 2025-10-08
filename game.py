@@ -21,8 +21,9 @@ class Character:
 
 class Player(Character):
 
-    def __init__(self, name, hp, atk):
+    def __init__(self, name, hp, atk, inv):
         super().__init__(name, hp, atk)
+        self.inv = inv
 
 
 class Enemy(Character):
@@ -55,7 +56,7 @@ def battle(player, enemy):
             enemy.take_dmg(dmg)
             print(f"{player.name} attacks {enemy.name} for {dmg} damage!")
         elif action == "x":
-            pass
+            print(player_inventory)
         elif action == "c":
             print(f"{player.name} trying to run")
             if random.random() < 0.66:
@@ -104,9 +105,14 @@ def menu_act():
                 print("That's not a number")
 
 
+# Items
+bread = 20
+bandage = 25
+
 # Player
 player_name = input("Enter your name: ")
-player = Player(player_name, 100, 25)
+player_inventory = [bread, bandage]
+player = Player(player_name, 100, 25, player_inventory)
 
 # Enemies
 roco = Enemy("Roco", 45, 35)
