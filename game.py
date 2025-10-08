@@ -31,12 +31,14 @@ class Player(Character):
 
 class Enemy(Character):
 
-    def __init__(self, name, hp, atk):
+    def __init__(self, name, hp, atk, desc):
         super().__init__(name, hp, atk)
+        self.desc = desc
 
 
 def battle(player, enemy):
     print("An enemy is attacking!")
+    sleep(1)
     print("")
 
     turn = 1
@@ -49,7 +51,7 @@ def battle(player, enemy):
         print(f"{enemy.name} HP: {enemy.hp}")
 
         print("")
-        print("[z] Attack, [x] Item, [c] Run")
+        print("[z] Attack, [x] Item, [c] Inspect, [v] Run")
         print("")
 
         action = input("Choose an action: ")
@@ -61,7 +63,17 @@ def battle(player, enemy):
         elif action == "x":
             print(player_inventory)
         elif action == "c":
+            print(f"You're inspecting {enemy.name}...")
+            sleep(1)
+            print("")
+            print(f"--- {enemy.name} ---")
+            print(f"{enemy.hp} HP")
+            print(f"{enemy.atk} attack")
+            print(enemy.desc)
+            print("")
+        elif action == "v":
             print(f"{player.name} trying to run")
+            sleep(1)
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
                 break
@@ -82,6 +94,8 @@ def battle(player, enemy):
             print(f"{enemy.name} hit {player.name} for {dmg} damage!")
 
             sleep(1)
+
+            print("")
 
         turn += 1
 
@@ -118,8 +132,10 @@ player_inventory = [bread, bandage]
 player = Player(player_name, 100, 25, player_inventory)
 
 # Enemies
-roco = Enemy("Roco", 45, 35)
-dodo = Enemy("Dodo", 60, 20)
+roco_desc = "Looks like an armadillo"
+roco = Enemy("Roco", 45, 35, roco_desc)
+dodo_desc = "A bird?"
+dodo = Enemy("Dodo", 60, 20, dodo_desc)
 
 # Menu
 print("Escape from This Place But You Can't See Anything Game")
@@ -130,8 +146,13 @@ print("(3) Exit")
 menu = menu_act()
 
 if menu == 1:
+    print("You're stuck in this place")
+    sleep(1)
+    print("You must get out of here")
+    sleep(1)
+    walk = input("Press enter to continue walking")
     battle(player, dodo)
 elif menu == 2:
-    print(player.atk)
+    print("There's no tutorial yet")
 elif menu == 3:
     exit
