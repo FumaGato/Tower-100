@@ -62,7 +62,7 @@ def result():
 
     print("")
     print("--- Result ---")
-    print("Enemy defeated: ")
+    print(f"Enemy defeated: {player.enemy_defeated}")
     print(f"Floor: {player.floor}")
     print("")
 
@@ -74,7 +74,6 @@ def result():
 
 def battle(player, enemy):
 
-    print("")
     print("An enemy is approaching!")
     sleep(1)
     print("")
@@ -108,6 +107,7 @@ def battle(player, enemy):
                     print(item.name)
             print("")
             use = input("Use wich item? : ").lower()
+            print("")
             used = None
             for item in player.inv:
                 if item.name.lower() == use:
@@ -138,7 +138,6 @@ def battle(player, enemy):
             sleep(1)
             print("")
             print(enemy.desc)
-            print("")
         elif action == "v":
             print(f"{player.name} trying to run.")
             sleep(1)
@@ -148,14 +147,13 @@ def battle(player, enemy):
                 break
             else:
                 print(f"{player.name} failed to escape!")
-                print("")
         else:
             print("Invalid action, you lost your turn.")
-            print("")
 
         sleep(1)
 
         if enemy.is_alive():
+            print("")
             print(f"{enemy.name} is attacking!")
             sleep(1)
             dmg = random.randint(enemy.atk - 5, enemy.atk + 5)
@@ -195,14 +193,13 @@ def menu_act():
 
 def game():
 
-    # print("")
-    # print("So bassicaly you decided to climb this tower...")
-    # sleep(1)
-    # print("And...")
-    # sleep(1)
-    # print("Yeah...")
-    # sleep(1)
-    # print("")
+    print("")
+    print("So bassicaly you decided to climb this tower...")
+    sleep(1)
+    print("And...")
+    sleep(1)
+    print("Yeah...")
+    sleep(1)
 
     while True:
         print("")
@@ -210,10 +207,13 @@ def game():
         player.floor += 1
         floor_encounter = random.random()
         if floor_encounter < 0.5:
+            print("")
+            print(f"--- Floor {player.floor} ---")
             encounter = random.choice(enemies)
             battle(player, encounter)
         else:
             print("")
+            print(f"--- Floor {player.floor} ---")
             print("There's no one.")
             sleep(1)
 
@@ -234,11 +234,12 @@ roco = Enemy("Roco", 45, 35, roco_desc)
 dodo_desc = "A bird?"
 dodo = Enemy("Dodo", 60, 20, dodo_desc)
 fufu_desc = "I don't know what that is."
-fufu = Enemy("Fufu", 50, 40, fufu_desc)
+fufu = Enemy("Fufu", 40, 40, fufu_desc)
 
 enemies = [roco, dodo, fufu]
 
 # Menu
+print("")
 print("--- Tower 100 ---")
 print("[1] Start")
 print("[2] Tutorial")
