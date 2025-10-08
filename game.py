@@ -58,7 +58,7 @@ def battle(player, enemy):
             pass
         elif action == "c":
             pass
-        elif action == "V":
+        elif action == "v":
             print(f"{player.name} trying to run")
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
@@ -81,7 +81,7 @@ def battle(player, enemy):
 
             sleep(1)
 
-    turn += 1
+        turn += 1
 
 
 def menu_act():
@@ -119,5 +119,3 @@ elif menu == 2:
     print(player.atk)
 elif menu == 3:
     exit
-else:
-    print("Invalid action")
