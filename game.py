@@ -33,13 +33,17 @@ class Player(Character):
 
         self.hp += amount
 
+    def update_hp(self):
+
+        if self.hp > 100:
+            self.hp = 100
+
 
 class Enemy(Character):
 
     def __init__(self, name, hp, atk, desc):
 
         super().__init__(name, hp, atk)
-
         self.desc = desc
 
 
@@ -85,16 +89,27 @@ def battle(player, enemy):
                 else:
                     print(item.name)
             print("")
-            use = input("Use wich item? : ")
-            if use in player.inv:
-                if use.heal_amount > 0:
-                    player.heal(use.heal_amount)
-                    print(
-                        f"{player.name} healed using {use.name} for {use.heal_amount} HP")
+            use = input("Use wich item? : ").lower()
+            used = None
+            for item in player.inv:
+                if item.name.lower() == use:
+                    used = item
+            if used:
+                if player.hp < 100:
+                    if used.heal_amount > 0:
+                        player.heal(used.heal_amount)
+                        print(
+                            f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
+                        player.inv.remove(used)
+                        sleep(1)
+                        player.update_hp()
+                        print(f"{player.name} HP is now {player.hp}.")
+                    else:
+                        print("You can't use that item.")
                 else:
-                    print("You can't use that item")
+                    print("Your HP is full!")
             else:
-                print(f"There's no {use} in inventory")
+                print(f"There's no {use} in your inventory.")
         elif action == "c":
             print(f"You're inspecting {enemy.name}...")
             sleep(1)
@@ -105,7 +120,7 @@ def battle(player, enemy):
             print(enemy.desc)
             print("")
         elif action == "v":
-            print(f"{player.name} trying to run")
+            print(f"{player.name} trying to run.")
             sleep(1)
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
@@ -113,7 +128,7 @@ def battle(player, enemy):
             else:
                 print(f"{player.name} failed to escape!")
         else:
-            print("Invalid action, you lost your turn")
+            print("Invalid action, you lost your turn.")
 
         sleep(1)
 
@@ -126,36 +141,36 @@ def battle(player, enemy):
             sleep(1)
             print("")
 
-        turn += 1
-
         if not player.is_alive():
             print("You died.")
             sleep(1)
             break
 
         if not enemy.is_alive():
-            print(f"{player.name} defeated {enemy.name}")
+            print(f"{player.name} defeated {enemy.name}.")
             sleep(1)
             print("You win the battle!")
             break
+
+        turn += 1
 
 
 def menu_act():
 
     while True:
-        value = input(">")
+        value = input("Choose an action: ")
         if value == "":
-            print("Choose an action: ")
+            print("Invalid action.")
         else:
             try:
                 return int(value)
             except ValueError:
-                print("That's not a number")
+                print("Invalid action.")
 
 
 # Items
-bread = Item("Bread", 20)
-bandage = Item("Bandage", 30)
+bread = Item("Bread", 40)
+bandage = Item("Bandage", 55)
 stick = Item("Stick", 0)
 
 # Player
@@ -164,11 +179,11 @@ player_inventory = [bread, bandage, stick]
 player = Player(player_name, 100, 25, player_inventory)
 
 # Enemies
-roco_desc = "Looks like an armadillo"
+roco_desc = "Looks like an armadillo."
 roco = Enemy("Roco", 45, 35, roco_desc)
 dodo_desc = "A bird?"
 dodo = Enemy("Dodo", 60, 20, dodo_desc)
-fufu_desc = "I don't know what that is"
+fufu_desc = "I don't know what that is."
 fufu = Enemy("Fufu", 50, 40, fufu_desc)
 
 enemies = [roco, dodo, fufu]
@@ -176,7 +191,7 @@ enemies = [roco, dodo, fufu]
 encounter = random.choice(enemies)
 
 # Menu
-print("Escape from This Place But You Can't See Anything Game")
+print("--- Tower 100 ---")
 print("[1] Start")
 print("[2] Tutorial")
 print("[3] Exit")
