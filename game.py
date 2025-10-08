@@ -36,6 +36,13 @@ class Enemy(Character):
         self.desc = desc
 
 
+class Item():
+
+    def __init__(self, name, heal_amount):
+        self.name = name
+        self.heal_amount = heal_amount
+
+
 def battle(player, enemy):
     print("An enemy is attacking!")
     sleep(1)
@@ -48,20 +55,28 @@ def battle(player, enemy):
         print(f"--- Turn {turn} ---")
 
         print(f"Your HP: {player.hp}")
-        print(f"{enemy.name} HP: {enemy.hp}")
+        # print(f"{enemy.name} HP: {enemy.hp}")
 
         print("")
         print("[z] Attack, [x] Item, [c] Inspect, [v] Run")
         print("")
 
         action = input("Choose an action: ")
+        print("")
 
         if action == "z":
             dmg = random.randint(player.atk - 5, player.atk + 5)
             enemy.take_dmg(dmg)
             print(f"{player.name} attacks {enemy.name} for {dmg} damage!")
         elif action == "x":
-            print(player_inventory)
+            print("--- Inventory ---")
+            for item in player.inv:
+                if item.heal_amount > 0:
+                    print(f"{item.name} (heal for {item.heal_amount} HP)")
+                else:
+                    print(item.name)
+            print("")
+            use = input("Use wich item? : ")
         elif action == "c":
             print(f"You're inspecting {enemy.name}...")
             sleep(1)
@@ -100,13 +115,15 @@ def battle(player, enemy):
         turn += 1
 
         if not player.is_alive():
-            print("You lost")
+            print("You died.")
+            sleep(1)
+
             break
 
         if not enemy.is_alive():
-            print(f"You defeated {enemy.name}")
+            print(f"{player.name} defeated {enemy.name}")
             sleep(1)
-            print("You win")
+            print("You win the battle!")
             break
 
 
@@ -123,12 +140,13 @@ def menu_act():
 
 
 # Items
-bread = 20
-bandage = 25
+bread = Item("Bread", 20)
+bandage = Item("Bandage", 30)
+stick = Item("Stick", 0)
 
 # Player
 player_name = input("Enter your name: ")
-player_inventory = [bread, bandage]
+player_inventory = [bread, bandage, stick]
 player = Player(player_name, 100, 25, player_inventory)
 
 # Enemies
@@ -136,12 +154,18 @@ roco_desc = "Looks like an armadillo"
 roco = Enemy("Roco", 45, 35, roco_desc)
 dodo_desc = "A bird?"
 dodo = Enemy("Dodo", 60, 20, dodo_desc)
+fufu_desc = "I don't know what that is"
+fufu = Enemy("Fufu", 50, 40, fufu_desc)
+
+enemies = [roco, dodo, fufu]
+
+encounter = random.choice(enemies)
 
 # Menu
 print("Escape from This Place But You Can't See Anything Game")
-print("(1) Start")
-print("(2) Tutorial")
-print("(3) Exit")
+print("[1] Start")
+print("[2] Tutorial")
+print("[3] Exit")
 
 menu = menu_act()
 
@@ -151,7 +175,7 @@ if menu == 1:
     print("You must get out of here")
     sleep(1)
     walk = input("Press enter to continue walking")
-    battle(player, dodo)
+    battle(player, encounter)
 elif menu == 2:
     print("There's no tutorial yet")
 elif menu == 3:
