@@ -39,6 +39,7 @@ class Enemy(Character):
     def __init__(self, name, hp, atk, desc):
 
         super().__init__(name, hp, atk)
+
         self.desc = desc
 
 
@@ -51,6 +52,7 @@ class Item():
 
 
 def battle(player, enemy):
+
     print("An enemy is attacking!")
     sleep(1)
     print("")
@@ -139,6 +141,7 @@ def battle(player, enemy):
 
 
 def menu_act():
+
     while True:
         value = input(">")
         if value == "":
