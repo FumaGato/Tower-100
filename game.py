@@ -11,27 +11,33 @@ class Character:
         self.atk = atk
 
     def take_dmg(self, amount):
+
         self.hp -= amount
+
         if self.hp < 0:
             self.hp = 0
 
     def is_alive(self):
+
         return self.hp > 0
 
 
 class Player(Character):
 
     def __init__(self, name, hp, atk, inv):
+
         super().__init__(name, hp, atk)
         self.inv = inv
 
     def heal(self, amount):
+
         self.hp += amount
 
 
 class Enemy(Character):
 
     def __init__(self, name, hp, atk, desc):
+
         super().__init__(name, hp, atk)
         self.desc = desc
 
@@ -39,6 +45,7 @@ class Enemy(Character):
 class Item():
 
     def __init__(self, name, heal_amount):
+
         self.name = name
         self.heal_amount = heal_amount
 
@@ -77,6 +84,15 @@ def battle(player, enemy):
                     print(item.name)
             print("")
             use = input("Use wich item? : ")
+            if use in player.inv:
+                if use.heal_amount > 0:
+                    player.heal(use.heal_amount)
+                    print(
+                        f"{player.name} healed using {use.name} for {use.heal_amount} HP")
+                else:
+                    print("You can't use that item")
+            else:
+                print(f"There's no {use} in inventory")
         elif action == "c":
             print(f"You're inspecting {enemy.name}...")
             sleep(1)
@@ -101,15 +117,11 @@ def battle(player, enemy):
 
         if enemy.is_alive():
             print(f"{enemy.name} is attacking!")
-
             sleep(1)
-
             dmg = random.randint(enemy.atk - 5, enemy.atk + 5)
             player.take_dmg(dmg)
             print(f"{enemy.name} hit {player.name} for {dmg} damage!")
-
             sleep(1)
-
             print("")
 
         turn += 1
@@ -117,7 +129,6 @@ def battle(player, enemy):
         if not player.is_alive():
             print("You died.")
             sleep(1)
-
             break
 
         if not enemy.is_alive():
@@ -167,16 +178,16 @@ print("[1] Start")
 print("[2] Tutorial")
 print("[3] Exit")
 
-menu = menu_act()
-
-if menu == 1:
-    print("You're stuck in this place")
-    sleep(1)
-    print("You must get out of here")
-    sleep(1)
-    walk = input("Press enter to continue walking")
-    battle(player, encounter)
-elif menu == 2:
-    print("There's no tutorial yet")
-elif menu == 3:
-    exit
+while True:
+    menu = menu_act()
+    if menu == 1:
+        print("You're stuck in this place")
+        sleep(1)
+        print("You must get out of here")
+        sleep(1)
+        walk = input("Press enter to continue walking")
+        battle(player, encounter)
+    elif menu == 2:
+        print("There's no tutorial yet")
+    elif menu == 3:
+        break
