@@ -45,7 +45,7 @@ def battle(player, enemy):
         print(f"{enemy.name} HP: {enemy.hp}")
 
         print("")
-        print("[z] Attack, [x] Skill, [c] Item, [v] Run")
+        print("[z] Attack, [x] Item, [c] Run")
         print("")
 
         action = input("Choose an action: ")
@@ -57,8 +57,6 @@ def battle(player, enemy):
         elif action == "x":
             pass
         elif action == "c":
-            pass
-        elif action == "v":
             print(f"{player.name} trying to run")
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
