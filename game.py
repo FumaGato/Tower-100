@@ -1,5 +1,6 @@
 from time import sleep
 import random
+import sys
 
 
 class Character:
@@ -24,10 +25,12 @@ class Character:
 
 class Player(Character):
 
-    def __init__(self, name, hp, atk, inv):
+    def __init__(self, name, hp, atk, inv, floor, enemy_defeated):
 
         super().__init__(name, hp, atk)
         self.inv = inv
+        self.floor = floor
+        self.enemy_defeated = enemy_defeated
 
     def heal(self, amount):
 
@@ -55,10 +58,24 @@ class Item():
         self.heal_amount = heal_amount
 
 
+def result():
+
+    print("")
+    print("--- Result ---")
+    print("Enemy defeated: ")
+    print(f"Floor: {player.floor}")
+    print("")
+
+    done = input("Press [Enter] to quit.")
+
+    print("")
+    sys.exit("Exited. Player died.")
+
+
 def battle(player, enemy):
 
     print("")
-    print("An enemy is attacking!")
+    print("An enemy is approaching!")
     sleep(1)
     print("")
 
@@ -69,7 +86,7 @@ def battle(player, enemy):
         print(f"--- Turn {turn} ---")
 
         print(f"Your HP: {player.hp}")
-        # print(f"{enemy.name} HP: {enemy.hp}")
+        print(f"{enemy.name} HP: {enemy.hp}")
 
         print("")
         print("[z] Attack, [x] Item, [c] Inspect, [v] Run")
@@ -118,6 +135,8 @@ def battle(player, enemy):
             print(f"--- {enemy.name} ---")
             print(f"{enemy.hp} HP")
             print(f"{enemy.atk} attack")
+            sleep(1)
+            print("")
             print(enemy.desc)
             print("")
         elif action == "v":
@@ -148,9 +167,10 @@ def battle(player, enemy):
         if not player.is_alive():
             print("You died.")
             sleep(1)
-            break
+            result()
 
         if not enemy.is_alive():
+            player.enemy_defeated += 1
             print(f"{player.name} defeated {enemy.name}.")
             sleep(1)
             print("You win the battle!")
@@ -175,8 +195,6 @@ def menu_act():
 
 def game():
 
-    floor = 0
-
     # print("")
     # print("So bassicaly you decided to climb this tower...")
     # sleep(1)
@@ -189,16 +207,18 @@ def game():
     while True:
         print("")
         walk = input("Press [Enter] to go to the next floor.")
+        player.floor += 1
         floor_encounter = random.random()
-
         if floor_encounter < 0.5:
+            encounter = random.choice(enemies)
             battle(player, encounter)
         else:
             print("")
             print("There's no one.")
             sleep(1)
 
-            # Items
+
+# Items
 bread = Item("Bread", 40)
 bandage = Item("Bandage", 55)
 stick = Item("Stick", 0)
@@ -206,7 +226,7 @@ stick = Item("Stick", 0)
 # Player
 player_name = input("Enter your name: ")
 player_inventory = [bread, bandage, stick]
-player = Player(player_name, 100, 25, player_inventory)
+player = Player(player_name, 100, 25, player_inventory, 0, 0)
 
 # Enemies
 roco_desc = "Looks like an armadillo."
@@ -217,8 +237,6 @@ fufu_desc = "I don't know what that is."
 fufu = Enemy("Fufu", 50, 40, fufu_desc)
 
 enemies = [roco, dodo, fufu]
-
-encounter = random.choice(enemies)
 
 # Menu
 print("--- Tower 100 ---")
@@ -236,4 +254,5 @@ while True:
         print("There's no tutorial yet")
         print("")
     elif menu == 3:
-        break
+        print("")
+        sys.exit("Exited.")
