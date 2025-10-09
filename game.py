@@ -112,7 +112,7 @@ def battle(player, enemy):
         print(f"{enemy.name} HP: {enemy.hp}")
 
         print("")
-        print("[z] Attack, [x] Item, [c] Inspect, [v] Run")
+        print("[z] Attack, [x] Inspect, [c] Inventory, [v] Run.")
         print("")
 
         action = input("Choose an action: ")
@@ -122,7 +122,10 @@ def battle(player, enemy):
             dmg = random.randint(player.atk - 5, player.atk + 5)
             enemy.take_dmg(dmg)
             print(f"{player.name} attacks {enemy.name} for {dmg} damage!")
-        elif action == "x":
+        elif action == "c":
+            print("--- Stats ---")
+            print(f"HP: {player.hp}")
+            print(f"ATK: {player.atk} ({player.weapon.name})")
             print("--- Inventory ---")
             for item in player.inv:
                 if item.heal_amount > 0:
@@ -152,9 +155,11 @@ def battle(player, enemy):
                     print("You can't use that right now.")
                 else:
                     print("You can't use that item.")
+            elif use == "":
+                print("For some reason you decided to not use any item.")
             else:
                 print(f"There's no {use} in your inventory.")
-        elif action == "c":
+        elif action == "x":
             print(f"You're inspecting {enemy.name}...")
             sleep(1)
             print("")
@@ -303,6 +308,8 @@ def game():
                 # Non-usable item
                 else:
                     print("You can't use that item.")
+            elif use == "":
+                print("Inventory closed.")
             else:
                 print(f"There's no {use} in your inventory.")
 
