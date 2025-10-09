@@ -1,4 +1,4 @@
-Pretty much finished
+Pretty much finished.
 Next time maybe at these:
 - boss
 - more items
