@@ -31,6 +31,7 @@ class Player(Character):
         self.inv = inv
         self.floor = floor
         self.enemy_defeated = enemy_defeated
+        self.weapon = None
 
     def heal(self, amount):
 
@@ -40,6 +41,23 @@ class Player(Character):
 
         if self.hp > 100:
             self.hp = 100
+
+    def equip(self, new_weapon):
+
+        if new_weapon == self.weapon:
+            print(f"{new_weapon.name} is already equipped.")
+            return
+
+        if self.weapon:
+            self.inv.append(self.weapon)
+
+        self.weapon = new_weapon
+        self.atk = new_weapon.atk
+
+        if new_weapon in self.inv:
+            self.inv.remove(new_weapon)
+
+        print(f"{self.name} equipped {new_weapon.name}! ATK is now {self.atk}.")
 
 
 class Enemy(Character):
@@ -114,8 +132,8 @@ def battle(player, enemy):
                 if item.name.lower() == use:
                     used = item
             if used:
-                if player.hp < 100:
-                    if used.heal_amount > 0:
+                if used.heal_amount > 0:
+                    if player.hp < 100:
                         player.heal(used.heal_amount)
                         print(
                             f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
@@ -124,9 +142,11 @@ def battle(player, enemy):
                         player.update_hp()
                         print(f"{player.name} HP is now {player.hp}.")
                     else:
-                        print("You can't use that item.")
+                        print("Your HP is full!")
+                elif used.aTK > 0:
+                    PRINT("You can't use that right now.")
                 else:
-                    print("Your HP is full!")
+                    print("You can't use that item.")
             else:
                 print(f"There's no {use} in your inventory.")
         elif action == "c":
@@ -144,7 +164,6 @@ def battle(player, enemy):
             sleep(1)
             if random.random() < 0.66:
                 print(f"{player.name} escaped!")
-                sleep(1)
                 break
             else:
                 print(f"{player.name} failed to escape!")
@@ -173,8 +192,7 @@ def battle(player, enemy):
             print(f"{player.name} defeated {enemy.name}.")
             sleep(1)
             print("You win the battle!")
-            sleep(1)
-            break
+            return
 
         turn += 1
 
@@ -213,14 +231,16 @@ def game():
             print(f"--- Floor {player.floor} ---")
             floor_encounter = random.random()
             if floor_encounter < 0.5:
-                encounter = random.choice(enemies)
+                template = random.choice(enemies)
+                encounter = Enemy(template.name, template.hp,
+                                  template.atk, template.desc)
                 battle(player, encounter)
             else:
                 print("There's no one.")
         elif act == "c":
             print("--- Stats ---")
             print(f"HP: {player.hp}")
-            print(f"ATK: {player.atk}")
+            print(f"ATK: {player.atk} ({player.weapon.name})")
             print("--- Inventory ---")
             for item in player.inv:
                 if item.heal_amount > 0:
@@ -237,8 +257,9 @@ def game():
                 if item.name.lower() == use:
                     used = item
             if used:
-                if player.hp < 100:
-                    if used.heal_amount > 0:
+                # Healing
+                if used.heal_amount > 0:
+                    if player.hp < 100:
                         player.heal(used.heal_amount)
                         print(
                             f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
@@ -247,10 +268,15 @@ def game():
                         player.update_hp()
                         print(f"{player.name} HP is now {player.hp}.")
                     else:
-                        print("You can't use that item.")
-                else:
-                    print("Your HP is full!")
+                        print("Your HP is full!")
 
+                # Switch weapon
+                elif used.atk > 0:
+                    player.equip(used)
+
+                # Non-usable item
+                else:
+                    print("You can't use that item.")
             else:
                 print(f"There's no {use} in your inventory.")
 
@@ -258,9 +284,15 @@ def game():
 
 
 # Items
+
+# *item* = Item("*item_name*", *item_heal_amount*, *item_atk*)
+
 bread = Item("Bread", 40, 0)
 bandage = Item("Bandage", 55, 0)
-stick = Item("Stick", 0, 30)
+
+stick = Item("Stick", 0, 25)
+wooden_sword = Item("Wooden Sword", 0, 35)
+
 phone = Item("Phone", 0, 0)
 
 # Player
@@ -268,10 +300,11 @@ player_name = input("Enter your name: ")
 player_inventory = [
     bread,
     bandage,
-    stick,
+    wooden_sword,
     phone
 ]
-player = Player(player_name, 100, 25, player_inventory, 0, 0)
+player = Player(player_name, 100, stick.atk, player_inventory, 0, 0)
+player.weapon = stick
 
 # Enemies
 roco_desc = "Looks like an armadillo."
