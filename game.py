@@ -240,7 +240,7 @@ def game():
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
-            elif floor_encounter > 0.5:
+            elif floor_encounter > 0.5 and floor_encounter < 0.75:
                 template = random.choice(
                     item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk)
                 encounter = Item(
