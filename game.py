@@ -1,6 +1,6 @@
-from time import sleep
 import random
-import sys
+from time import sleep
+from sys import exit
 
 
 class Character:
@@ -93,7 +93,7 @@ def result():
     done = input("Press [Enter] to quit.")
 
     print("")
-    sys.exit("Exited. Player died.")
+    exit("Exited. Player died.")
 
 
 def battle(player, enemy):
@@ -366,4 +366,4 @@ while True:
         print("")
     elif menu == 3:
         print("")
-        sys.exit("Exited.")
+        exit("Exited.")
