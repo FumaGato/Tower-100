@@ -331,10 +331,7 @@ item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk = [
 # Player
 player_name = input("Enter your name: ")
 player_inventory = [
-    bread,
-    bandage,
-    wooden_sword,
-    phone
+    bread
 ]
 player = Player(player_name, 100, stick.atk, player_inventory, 0, 0)
 player.weapon = stick
