@@ -59,6 +59,11 @@ class Player(Character):
 
         print(f"{self.name} equipped {new_weapon.name}! ATK is now {self.atk}.")
 
+    def take_item(self, new_item):
+
+        if new_item:
+            self.inv.append(new_item)
+
 
 class Enemy(Character):
 
@@ -143,8 +148,8 @@ def battle(player, enemy):
                         print(f"{player.name} HP is now {player.hp}.")
                     else:
                         print("Your HP is full!")
-                elif used.aTK > 0:
-                    PRINT("You can't use that right now.")
+                elif used.atk > 0:
+                    print("You can't use that right now.")
                 else:
                     print("You can't use that item.")
             else:
@@ -235,8 +240,28 @@ def game():
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
+            elif floor_encounter > 0.5:
+                template = random.choice(
+                    item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk)
+                encounter = Item(
+                    template.name, template.heal_amount, template.atk)
+                print(f"There's a {template.name} on the floor.")
+                sleep(1)
+                print("")
+                print("[z] Take, [Enter] Leave.")
+                print("")
+                act = input("Choose an action: ")
+                print("")
+                if act == "z":
+                    player.take_item(template)
+                    print(
+                        f"You took the {template.name}.")
+                    sleep(1)
+                    print(f"{template.name} added to inventory.")
+                else:
+                    print(f"You leave the {template.name}.")
             else:
-                print("There's no one.")
+                print("Nothing.")
         elif act == "c":
             print("--- Stats ---")
             print(f"HP: {player.hp}")
@@ -294,6 +319,14 @@ stick = Item("Stick", 0, 25)
 wooden_sword = Item("Wooden Sword", 0, 35)
 
 phone = Item("Phone", 0, 0)
+rock = Item("Piece of rock", 0, 0)
+
+item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk = [
+    bread,
+    bandage,
+    wooden_sword,
+    rock
+]
 
 # Player
 player_name = input("Enter your name: ")
@@ -314,7 +347,9 @@ dodo = Enemy("Dodo", 60, 20, dodo_desc)
 fufu_desc = "I don't know what that is."
 fufu = Enemy("Fufu", 40, 40, fufu_desc)
 
-enemies = [roco, dodo, fufu]
+enemies = [
+    roco, dodo, fufu
+]
 
 # Menu
 print("")
