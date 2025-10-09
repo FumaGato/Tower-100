@@ -205,7 +205,9 @@ def battle(player, enemy):
 def menu_act():
 
     while True:
+        print("")
         value = input("Choose an action: ")
+        print("")
         if value == "":
             print("Invalid action.")
         else:
@@ -217,7 +219,6 @@ def menu_act():
 
 def game():
 
-    print("")
     print("So bassicaly you decided to climb this tower...")
     sleep(1)
     print("And...")
@@ -339,7 +340,7 @@ player.weapon = stick
 # Enemies
 roco_desc = "Looks like an armadillo."
 roco = Enemy("Roco", 45, 35, roco_desc)
-dodo_desc = "A bird?"
+dodo_desc = "A bird? Definately a bird."
 dodo = Enemy("Dodo", 60, 20, dodo_desc)
 fufu_desc = "I don't know what that is."
 fufu = Enemy("Fufu", 40, 40, fufu_desc)
@@ -354,16 +355,14 @@ print("--- Tower 100 ---")
 print("[1] Start")
 print("[2] Tutorial")
 print("[3] Exit")
-print("")
 
 while True:
     menu = menu_act()
     if menu == 1:
         game()
     elif menu == 2:
-        print("")
-        print("There's no tutorial yet")
-        print("")
+        print("There's no tutorial yet.")
     elif menu == 3:
-        print("")
         exit("Exited.")
+    else:
+        print("Invalid action.")
