@@ -52,10 +52,11 @@ class Enemy(Character):
 
 class Item():
 
-    def __init__(self, name, heal_amount):
+    def __init__(self, name, heal_amount, atk):
 
         self.name = name
         self.heal_amount = heal_amount
+        self.atk = atk
 
 
 def result():
@@ -203,29 +204,73 @@ def game():
 
     while True:
         print("")
-        walk = input("Press [Enter] to go to the next floor.")
-        player.floor += 1
-        floor_encounter = random.random()
-        if floor_encounter < 0.5:
-            print("")
+        print("[Enter] Next floor, [c] Inventory.")
+        print("")
+        act = input("Choose an action: ")
+        print("")
+        if act == "":
+            player.floor += 1
             print(f"--- Floor {player.floor} ---")
-            encounter = random.choice(enemies)
-            battle(player, encounter)
-        else:
+            floor_encounter = random.random()
+            if floor_encounter < 0.5:
+                encounter = random.choice(enemies)
+                battle(player, encounter)
+            else:
+                print("There's no one.")
+        elif act == "c":
+            print("--- Stats ---")
+            print(f"HP: {player.hp}")
+            print(f"ATK: {player.atk}")
+            print("--- Inventory ---")
+            for item in player.inv:
+                if item.heal_amount > 0:
+                    print(f"- {item.name} (Heal for {item.heal_amount} HP)")
+                elif item.atk > 0:
+                    print(f"- {item.name} (Deal {item.atk} damage)")
+                else:
+                    print(f"- {item.name}")
             print("")
-            print(f"--- Floor {player.floor} ---")
-            print("There's no one.")
-            sleep(1)
+            use = input("Use wich item? : ").lower()
+            print("")
+            used = None
+            for item in player.inv:
+                if item.name.lower() == use:
+                    used = item
+            if used:
+                if player.hp < 100:
+                    if used.heal_amount > 0:
+                        player.heal(used.heal_amount)
+                        print(
+                            f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
+                        player.inv.remove(used)
+                        sleep(1)
+                        player.update_hp()
+                        print(f"{player.name} HP is now {player.hp}.")
+                    else:
+                        print("You can't use that item.")
+                else:
+                    print("Your HP is full!")
+
+            else:
+                print(f"There's no {use} in your inventory.")
+
+        sleep(1)
 
 
 # Items
-bread = Item("Bread", 40)
-bandage = Item("Bandage", 55)
-stick = Item("Stick", 0)
+bread = Item("Bread", 40, 0)
+bandage = Item("Bandage", 55, 0)
+stick = Item("Stick", 0, 30)
+phone = Item("Phone", 0, 0)
 
 # Player
 player_name = input("Enter your name: ")
-player_inventory = [bread, bandage, stick]
+player_inventory = [
+    bread,
+    bandage,
+    stick,
+    phone
+]
 player = Player(player_name, 100, 25, player_inventory, 0, 0)
 
 # Enemies
