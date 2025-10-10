@@ -72,6 +72,34 @@ class Enemy(Character):
         super().__init__(name, hp, atk)
         self.desc = desc
 
+    def drop_item(self):
+
+        chance = random.random()
+
+        if chance < 0.2:
+            template = random.choice(
+                common_items)
+            drop = Item(template.name, template.heal_amount, template.atk)
+            print(f"{self.name} drops a {template.name} on the floor.")
+            sleep(1)
+            print("")
+            print("[z] Take, [Enter] Leave.")
+            print("")
+            act = input("Choose an action: ")
+            if act == "z":
+                player.take_item(template)
+                print("")
+                print(
+                    f"You took the {template.name}.")
+                sleep(1)
+                print(f"{template.name} added to inventory.")
+            else:
+                print("")
+                print(f"You leave the {template.name}.")
+            sleep(1)
+        else:
+            pass
+
 
 class Item():
 
@@ -201,6 +229,7 @@ def battle(player, enemy):
             player.enemy_defeated += 1
             print(f"{player.name} defeated {enemy.name}.")
             sleep(1)
+            enemy.drop_item()
             print("You win the battle!")
             return
 
@@ -242,13 +271,53 @@ def game():
             print(f"--- Floor {player.floor} ---")
             floor_encounter = random.random()
             if floor_encounter < 0.5:
-                template = random.choice(enemies)
+                template = random.choice(enemies_lv1)
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
-            elif floor_encounter > 0.5 and floor_encounter < 0.75:
+            elif floor_encounter > 0.5 and floor_encounter <= 0.70:
                 template = random.choice(
-                    item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk)
+                    common_items)
+                encounter = Item(
+                    template.name, template.heal_amount, template.atk)
+                print(f"There's a {template.name} on the floor.")
+                sleep(1)
+                print("")
+                print("[z] Take, [Enter] Leave.")
+                print("")
+                act = input("Choose an action: ")
+                print("")
+                if act == "z":
+                    player.take_item(template)
+                    print(
+                        f"You took the {template.name}.")
+                    sleep(1)
+                    print(f"{template.name} added to inventory.")
+                else:
+                    print(f"You leave the {template.name}.")
+            elif floor_encounter > 0.70 and floor_encounter <= 0.77:
+                template = random.choice(
+                    rare_items)
+                encounter = Item(
+                    template.name, template.heal_amount, template.atk)
+                print(f"There's a {template.name} on the floor.")
+                sleep(1)
+                print("")
+                print("[z] Take, [Enter] Leave.")
+                print("")
+                act = input("Choose an action: ")
+                print("")
+                if act == "z":
+                    player.take_item(template)
+                    print(
+                        f"You took the {template.name}.")
+                    sleep(1)
+                    print(f"{template.name} added to inventory.")
+                else:
+                    print(f"You leave the {template.name}.")
+            elif floor_encounter > 0.77 and floor_encounter <= 0.80:
+                template = random.choice(
+                    super_rare_items)
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
                 print(f"There's a {template.name} on the floor.")
@@ -312,6 +381,8 @@ def game():
                 print("Inventory closed.")
             else:
                 print(f"There's no {use} in your inventory.")
+        else:
+            print("Invalid action.")
 
         sleep(1)
 
@@ -320,20 +391,35 @@ def game():
 
 # *item* = Item("*item_name*", *item_heal_amount*, *item_atk*)
 
-bread = Item("Bread", 40, 0)
-bandage = Item("Bandage", 55, 0)
+# Common
+bread = Item("Bread", 20, 0)
+bandage = Item("Bandage", 30, 0)
 
-stick = Item("Stick", 0, 25)
-wooden_sword = Item("Wooden Sword", 0, 35)
+stick = Item("Stick", 0, 10)
+wooden_sword = Item("Wooden Sword", 0, 20)
 
 phone = Item("Phone", 0, 0)
 rock = Item("Piece of rock", 0, 0)
 
-item_that_can_spawn_everytime_you_up_a_floor_or_something_ig_idk = [
+# Rare
+sword = Item("Normal Sword", 0, 30)
+
+# Super rare
+good_sword = Item("Good Sword", 0, 40)
+
+common_items = [
     bread,
     bandage,
     wooden_sword,
     rock
+]
+
+rare_items = [
+    sword
+]
+
+super_rare_items = [
+    good_sword
 ]
 
 # Player
@@ -346,13 +432,13 @@ player.weapon = stick
 
 # Enemies
 roco_desc = "Looks like an armadillo."
-roco = Enemy("Roco", 45, 35, roco_desc)
+roco = Enemy("Roco", 30, 15, roco_desc)
 dodo_desc = "A bird? Definately a bird."
-dodo = Enemy("Dodo", 60, 20, dodo_desc)
+dodo = Enemy("Dodo", 40, 10, dodo_desc)
 fufu_desc = "I don't know what that is."
-fufu = Enemy("Fufu", 40, 40, fufu_desc)
+fufu = Enemy("Fufu", 25, 20, fufu_desc)
 
-enemies = [
+enemies_lv1 = [
     roco, dodo, fufu
 ]
 
