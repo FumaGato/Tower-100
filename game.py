@@ -294,7 +294,6 @@ def game():
 
     # Game loop
     while True:
-        print(player.enemy_defeated)
         print("")
         print("[Enter] Next floor, [c] Inventory.")
         print("")
@@ -308,11 +307,11 @@ def game():
                 template = random.choice(enemies_lv1)
 
                 # Difficulty increase
-                if player.enemy_defeated >= 5:
+                if player.enemy_defeated > 4 and player.enemy_defeated < 10:
                     template = random.choice(enemies_lv2)
-                elif player.enemy_defeated >= 10:
+                elif player.enemy_defeated > 9 and player.enemy_defeated < 15:
                     template = random.choice(enemies_lv3)
-                elif player.enemy_defeated >= 15:
+                elif player.enemy_defeated > 14:
                     template = random.choice(enemies_lv4)
 
                 encounter = Enemy(template.name, template.hp,
@@ -328,7 +327,7 @@ def game():
                     template = random.choice(rare_items)
                 elif floor_encounter > 0.72 and floor_encounter <= 0.75:
                     template = random.choice(super_rare_items)
-                elif floor_encounter == 0.76:
+                elif floor_encounter > 0.75 and floor_encounter < 0.77:
                     template = random.choice(legendary_item)
 
                 encounter = Item(
