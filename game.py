@@ -284,6 +284,7 @@ def menu_act():
 
 def game():
 
+    # Intro
     print("So bassicaly you decided to climb this tower...")
     sleep(1)
     print("And...")
@@ -291,7 +292,9 @@ def game():
     print("Yeah...")
     sleep(1)
 
+    # Game loop
     while True:
+        print(player.enemy_defeated)
         print("")
         print("[Enter] Next floor, [c] Inventory.")
         print("")
@@ -303,21 +306,31 @@ def game():
             floor_encounter = random.random()
             if floor_encounter < 0.5:
                 template = random.choice(enemies_lv1)
+
+                # Difficulty increase
+                if player.enemy_defeated >= 5:
+                    template = random.choice(enemies_lv2)
+                elif player.enemy_defeated >= 10:
+                    template = random.choice(enemies_lv3)
+                elif player.enemy_defeated >= 15:
+                    template = random.choice(enemies_lv4)
+
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
-            elif floor_encounter > 0.5 and floor_encounter <= 0.65:
-                template = random.choice(common_items)
-                encounter = Item(
-                    template.name, template.heal_amount, template.atk)
-                player.theres_item(encounter)
-            elif floor_encounter > 0.65 and floor_encounter <= 0.72:
-                template = random.choice(rare_items)
-                encounter = Item(
-                    template.name, template.heal_amount, template.atk)
-                player.theres_item(encounter)
-            elif floor_encounter > 0.72 and floor_encounter <= 0.75:
-                template = random.choice(super_rare_items)
+            elif floor_encounter > 0.5 and floor_encounter < 0.77:
+                template = None
+
+                # Item loot rarity
+                if floor_encounter > 0.5 and floor_encounter <= 0.65:
+                    template = random.choice(common_items)
+                elif floor_encounter > 0.65 and floor_encounter <= 0.72:
+                    template = random.choice(rare_items)
+                elif floor_encounter > 0.72 and floor_encounter <= 0.75:
+                    template = random.choice(super_rare_items)
+                elif floor_encounter == 0.76:
+                    template = random.choice(legendary_item)
+
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
                 player.theres_item(encounter)
@@ -374,9 +387,6 @@ def game():
 
 
 # --- Items ---
-
-# *item* = Item("*item_name*", *item_heal_amount*, *item_atk*)
-
 # Common
 bread = Item("Bread", 20, 0)
 bandage = Item("Bandage", 30, 0)
@@ -384,20 +394,22 @@ bandage = Item("Bandage", 30, 0)
 stick = Item("Stick", 0, 10)
 wooden_sword = Item("Wooden Sword", 0, 20)
 
-phone = Item("Phone", 0, 0)
-rock = Item("Piece of rock", 0, 0)
-
 # Rare
-sword = Item("Normal Sword", 0, 30)
+sword = Item("Normal Sword", 0, 25)
 
 # Super rare
-good_sword = Item("Good Sword", 0, 40)
+good_sword = Item("Good Sword", 0, 35)
 
+phone = Item("Phone", 0, 0)
+
+# Legendary
+rock = Item("Piece of rock", 0, 0)
+
+# --- --- --- --- ---
 common_items = [
     bread,
     bandage,
-    wooden_sword,
-    rock
+    wooden_sword
 ]
 
 rare_items = [
@@ -405,7 +417,12 @@ rare_items = [
 ]
 
 super_rare_items = [
-    good_sword
+    good_sword,
+    phone
+]
+
+legendary_item = [
+    rock
 ]
 
 # --- Player ---
@@ -417,6 +434,7 @@ player = Player(player_name, 100, stick.atk, player_inventory, 0, 0)
 player.weapon = stick
 
 # --- Enemies ---
+# Easy
 roco_desc = "Looks like an armadillo."
 roco = Enemy("Roco", 30, 15, roco_desc)
 dodo_desc = "A bird? Definately a bird."
@@ -424,8 +442,39 @@ dodo = Enemy("Dodo", 40, 10, dodo_desc)
 fufu_desc = "I don't know what that is."
 fufu = Enemy("Fufu", 25, 20, fufu_desc)
 
+# Medium
+dada_desc = "Its body has black and white stripes."
+dada = Enemy("Dada", 40, 30, dada_desc)
+lobo_desc = "A tiny bear."
+lobo = Enemy("Lobo", 50, 20, lobo_desc)
+tebe_desc = "Its head is on his belly."
+tebe = Enemy("Tebe", 35, 35, tebe_desc)
+
+# Hard
+snorax_desc = "Big belly."
+snorax = Enemy("Snorax", 60, 20, snorax_desc)
+soni_desc = "That thing looks spiky."
+soni = Enemy("Soni", 45, 35, soni_desc)
+stepe_desc = "Looks like a normal guy wearing a blue shirt."
+stepe = Enemy("Stepe", 50, 30, stepe_desc)
+
+# --- --- --- --- ---
 enemies_lv1 = [
     roco, dodo, fufu
+]
+
+enemies_lv2 = [
+    dada, lobo, tebe
+]
+
+enemies_lv3 = [
+    snorax, soni, stepe
+]
+
+enemies_lv4 = [
+    roco, dodo, fufu,
+    dada, lobo, tebe,
+    snorax, soni, stepe
 ]
 
 # --- Menu ---
@@ -445,3 +494,7 @@ while True:
         exit("Exited.")
     else:
         print("Invalid action.")
+
+# make
+# it
+# 500
