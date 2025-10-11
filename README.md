@@ -1,4 +1,4 @@
-Smal text based rpg rogue-like game made by me for learning how to code.
+Small text based rpg rogue-like game made by me for learning how to code.
 Here's a few thing I want to add in the game:
 - boss
 - more items
