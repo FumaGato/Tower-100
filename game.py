@@ -65,6 +65,7 @@ class Player(Character):
             self.inv.append(new_item)
 
     def theres_item(self, item):
+
         print(f"There's a {item.name} on the floor.")
         sleep(1)
         print("")
@@ -81,7 +82,16 @@ class Player(Character):
         else:
             print(f"You leave the {item.name}.")
 
+
+class Enemy(Character):
+
+    def __init__(self, name, hp, atk, desc):
+
+        super().__init__(name, hp, atk)
+        self.desc = desc
+
     def theres_item_enemy(self, item):
+
         print(f"{self.name} drops a {item.name} on the floor.")
         sleep(1)
         print("")
@@ -100,14 +110,6 @@ class Player(Character):
             print(f"You leave the {item.name}.")
         sleep(1)
 
-
-class Enemy(Character):
-
-    def __init__(self, name, hp, atk, desc):
-
-        super().__init__(name, hp, atk)
-        self.desc = desc
-
     def drop_item(self):
 
         chance = random.random()
@@ -115,15 +117,15 @@ class Enemy(Character):
         if chance < 0.2:
             template = random.choice(common_items)
             drop = Item(template.name, template.heal_amount, template.atk)
-            player.theres_item_enemy(drop)
+            self.theres_item_enemy(drop)
         elif chance > 0.15 and chance <= 0.22:
             template = random.choice(rare_items)
             drop = Item(template.name, template.heal_amount, template.atk)
-            player.theres_item_enemy(drop)
+            self.theres_item_enemy(drop)
         elif chance > 0.22 and chance < 0.25:
             template = random.choice(super_rare_items)
             drop = Item(template.name, template.heal_amount, template.atk)
-            player.theres_item_enemy(drop)
+            self.theres_item_enemy(drop)
         else:
             pass
 
