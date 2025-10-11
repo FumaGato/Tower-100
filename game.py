@@ -64,6 +64,42 @@ class Player(Character):
         if new_item:
             self.inv.append(new_item)
 
+    def theres_item(self, item):
+        print(f"There's a {item.name} on the floor.")
+        sleep(1)
+        print("")
+        print("[z] Take, [Enter] Leave.")
+        print("")
+        act = input("Choose an action: ")
+        print("")
+        if act == "z":
+            player.take_item(item)
+            print(
+                f"You took the {item.name}.")
+            sleep(1)
+            print(f"{item.name} added to inventory.")
+        else:
+            print(f"You leave the {item.name}.")
+
+    def theres_item_enemy(self, item):
+        print(f"{self.name} drops a {item.name} on the floor.")
+        sleep(1)
+        print("")
+        print("[z] Take, [Enter] Leave.")
+        print("")
+        act = input("Choose an action: ")
+        if act == "z":
+            player.take_item(item)
+            print("")
+            print(
+                f"You took the {item.name}.")
+            sleep(1)
+            print(f"{item.name} added to inventory.")
+        else:
+            print("")
+            print(f"You leave the {item.name}.")
+        sleep(1)
+
 
 class Enemy(Character):
 
@@ -77,26 +113,17 @@ class Enemy(Character):
         chance = random.random()
 
         if chance < 0.2:
-            template = random.choice(
-                common_items)
+            template = random.choice(common_items)
             drop = Item(template.name, template.heal_amount, template.atk)
-            print(f"{self.name} drops a {template.name} on the floor.")
-            sleep(1)
-            print("")
-            print("[z] Take, [Enter] Leave.")
-            print("")
-            act = input("Choose an action: ")
-            if act == "z":
-                player.take_item(template)
-                print("")
-                print(
-                    f"You took the {template.name}.")
-                sleep(1)
-                print(f"{template.name} added to inventory.")
-            else:
-                print("")
-                print(f"You leave the {template.name}.")
-            sleep(1)
+            player.theres_item_enemy(drop)
+        elif chance > 0.15 and chance <= 0.22:
+            template = random.choice(rare_items)
+            drop = Item(template.name, template.heal_amount, template.atk)
+            player.theres_item_enemy(drop)
+        elif chance > 0.22 and chance < 0.25:
+            template = random.choice(super_rare_items)
+            drop = Item(template.name, template.heal_amount, template.atk)
+            player.theres_item_enemy(drop)
         else:
             pass
 
@@ -157,7 +184,9 @@ def battle(player, enemy):
             print("--- Inventory ---")
             for item in player.inv:
                 if item.heal_amount > 0:
-                    print(f"{item.name} (heal for {item.heal_amount} HP)")
+                    print(f"- {item.name} (heal for {item.heal_amount} HP)")
+                elif item.atk > 0:
+                    print(f"- {item.name} (deal {item.atk} damage)")
                 else:
                     print(item.name)
             print("")
@@ -180,7 +209,7 @@ def battle(player, enemy):
                     else:
                         print("Your HP is full!")
                 elif used.atk > 0:
-                    print("You can't use that right now.")
+                    print("You can't switch weapon mid battle!")
                 else:
                     print("You can't use that item.")
             elif use == "":
@@ -275,66 +304,21 @@ def game():
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
-            elif floor_encounter > 0.5 and floor_encounter <= 0.70:
-                template = random.choice(
-                    common_items)
+            elif floor_encounter > 0.5 and floor_encounter <= 0.65:
+                template = random.choice(common_items)
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
-                print(f"There's a {template.name} on the floor.")
-                sleep(1)
-                print("")
-                print("[z] Take, [Enter] Leave.")
-                print("")
-                act = input("Choose an action: ")
-                print("")
-                if act == "z":
-                    player.take_item(template)
-                    print(
-                        f"You took the {template.name}.")
-                    sleep(1)
-                    print(f"{template.name} added to inventory.")
-                else:
-                    print(f"You leave the {template.name}.")
-            elif floor_encounter > 0.70 and floor_encounter <= 0.77:
-                template = random.choice(
-                    rare_items)
+                player.theres_item(encounter)
+            elif floor_encounter > 0.65 and floor_encounter <= 0.72:
+                template = random.choice(rare_items)
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
-                print(f"There's a {template.name} on the floor.")
-                sleep(1)
-                print("")
-                print("[z] Take, [Enter] Leave.")
-                print("")
-                act = input("Choose an action: ")
-                print("")
-                if act == "z":
-                    player.take_item(template)
-                    print(
-                        f"You took the {template.name}.")
-                    sleep(1)
-                    print(f"{template.name} added to inventory.")
-                else:
-                    print(f"You leave the {template.name}.")
-            elif floor_encounter > 0.77 and floor_encounter <= 0.80:
-                template = random.choice(
-                    super_rare_items)
+                player.theres_item(encounter)
+            elif floor_encounter > 0.72 and floor_encounter <= 0.75:
+                template = random.choice(super_rare_items)
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
-                print(f"There's a {template.name} on the floor.")
-                sleep(1)
-                print("")
-                print("[z] Take, [Enter] Leave.")
-                print("")
-                act = input("Choose an action: ")
-                print("")
-                if act == "z":
-                    player.take_item(template)
-                    print(
-                        f"You took the {template.name}.")
-                    sleep(1)
-                    print(f"{template.name} added to inventory.")
-                else:
-                    print(f"You leave the {template.name}.")
+                player.theres_item(encounter)
             else:
                 print("Nothing.")
         elif act == "c":
@@ -344,9 +328,9 @@ def game():
             print("--- Inventory ---")
             for item in player.inv:
                 if item.heal_amount > 0:
-                    print(f"- {item.name} (Heal for {item.heal_amount} HP)")
+                    print(f"- {item.name} (heal for {item.heal_amount} HP)")
                 elif item.atk > 0:
-                    print(f"- {item.name} (Deal {item.atk} damage)")
+                    print(f"- {item.name} (deal {item.atk} damage)")
                 else:
                     print(f"- {item.name}")
             print("")
@@ -387,7 +371,7 @@ def game():
         sleep(1)
 
 
-# Items
+# --- Items ---
 
 # *item* = Item("*item_name*", *item_heal_amount*, *item_atk*)
 
@@ -422,7 +406,7 @@ super_rare_items = [
     good_sword
 ]
 
-# Player
+# --- Player ---
 player_name = input("Enter your name: ")
 player_inventory = [
     bread
@@ -430,7 +414,7 @@ player_inventory = [
 player = Player(player_name, 100, stick.atk, player_inventory, 0, 0)
 player.weapon = stick
 
-# Enemies
+# --- Enemies ---
 roco_desc = "Looks like an armadillo."
 roco = Enemy("Roco", 30, 15, roco_desc)
 dodo_desc = "A bird? Definately a bird."
@@ -442,7 +426,7 @@ enemies_lv1 = [
     roco, dodo, fufu
 ]
 
-# Menu
+# --- Menu ---
 print("")
 print("--- Tower 100 ---")
 print("[1] Start")
