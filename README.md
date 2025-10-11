@@ -5,3 +5,4 @@ Next time maybe at these:
 - more weapon
 - balance a little bit maybe
 - add skill buff after defeating certain number of enemies maybe if I'm not lazy ig
+- difficulty increase
