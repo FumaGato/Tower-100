@@ -114,7 +114,7 @@ class Enemy(Character):
 
         chance = random.random()
 
-        if chance < 0.2:
+        if chance <= 0.15:
             template = random.choice(common_items)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
@@ -122,8 +122,12 @@ class Enemy(Character):
             template = random.choice(rare_items)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
-        elif chance > 0.22 and chance < 0.25:
+        elif chance > 0.22 and chance <= 0.25:
             template = random.choice(super_rare_items)
+            drop = Item(template.name, template.heal_amount, template.atk)
+            self.theres_item_enemy(drop)
+        elif chance > 0.25 and chance < 0.27:
+            template = random.choice(legendary_item)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
         else:
@@ -231,7 +235,7 @@ def battle(player, enemy):
         elif action == "v":
             print(f"{player.name} trying to run.")
             sleep(1)
-            if random.random() < 0.66:
+            if random.random() < 0.70:
                 print(f"{player.name} escaped!")
                 break
             else:
