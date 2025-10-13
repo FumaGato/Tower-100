@@ -392,39 +392,67 @@ def game():
 # --- Items ---
 # Common
 bread = Item("Bread", 20, 0)
-bandage = Item("Bandage", 30, 0)
+bandage = Item("Bandage", 25, 0)
+donut = Item("Donut", 25, 0)
+potion = Item("Potion", 30, 0)
 
-stick = Item("Stick", 0, 10)
+stick = Item("Stick", 0, 15)
 wooden_sword = Item("Wooden Sword", 0, 20)
 
 # Rare
+pizza = Item("Pizza", 40, 0)
+glazed_donut = Item("Glazed Donut", 35, 0)
+chicken = Item("Fried Chicken", 45, 0)
+
 sword = Item("Normal Sword", 0, 25)
+staff = Item("Staff", 0, 25)
+stone_axe = Item("Stone Axe", 0, 30)
 
 # Super rare
-good_sword = Item("Good Sword", 0, 35)
+a_whole_damn_cake = Item("Cake", 50, 0)
+indomie = Item("Indomie", 60, 0)
+
+good_sword = Item("Good Sword", 0, 33)
+axe = Item("Good Axe", 0, 35)
 
 phone = Item("Phone", 0, 0)
 
 # Legendary
+martabak = Item("Martabak Manis Coklat", 80, 0)
+
+the_rock = Item("The Rock", 0, 40)
+
 rock = Item("Piece of rock", 0, 0)
 
 # --- --- --- --- ---
 common_items = [
     bread,
     bandage,
+    donut,
+    potion,
     wooden_sword
 ]
 
 rare_items = [
+    pizza,
+    glazed_donut,
+    chicken,
+    staff,
+    stone_axe,
     sword
 ]
 
 super_rare_items = [
+    a_whole_damn_cake,
+    indomie,
     good_sword,
+    axe,
     phone
 ]
 
 legendary_item = [
+    martabak,
+    the_rock,
     rock
 ]
 
@@ -497,7 +525,3 @@ while True:
         exit("Exited.")
     else:
         print("Invalid action.")
-
-# make
-# it
-# 500
