@@ -148,7 +148,7 @@ def result():
     print("")
     print("--- Result ---")
     print(f"Enemy defeated: {player.enemy_defeated}")
-    print(f"Floor: {player.floor}")
+    print(f"Floor reached: {player.floor}")
     print("")
 
     done = input("Press [Enter] to quit.")
