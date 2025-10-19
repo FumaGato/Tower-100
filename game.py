@@ -118,15 +118,15 @@ class Enemy(Character):
             template = random.choice(common_items)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
-        elif chance > 0.15 and chance <= 0.22:
+        elif chance > 0.15 and chance <= 0.27:
             template = random.choice(rare_items)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
-        elif chance > 0.22 and chance <= 0.25:
+        elif chance > 0.27 and chance <= 0.34:
             template = random.choice(super_rare_items)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
-        elif chance > 0.25 and chance < 0.27:
+        elif chance > 0.34 and chance < 0.38:
             template = random.choice(legendary_item)
             drop = Item(template.name, template.heal_amount, template.atk)
             self.theres_item_enemy(drop)
@@ -235,7 +235,7 @@ def battle(player, enemy):
         elif action == "v":
             print(f"{player.name} trying to run.")
             sleep(1)
-            if random.random() < 0.70:
+            if random.random() < 0.75:
                 print(f"{player.name} escaped!")
                 break
             else:
@@ -307,7 +307,7 @@ def game():
             player.floor += 1
             print(f"--- Floor {player.floor} ---")
             floor_encounter = random.random()
-            if floor_encounter < 0.5:
+            if floor_encounter < 0.45:
                 template = random.choice(enemies_lv1)
 
                 # Difficulty increase
@@ -321,18 +321,18 @@ def game():
                 encounter = Enemy(template.name, template.hp,
                                   template.atk, template.desc)
                 battle(player, encounter)
-            elif floor_encounter > 0.5 and floor_encounter < 0.77:
+            elif floor_encounter > 0.45 and floor_encounter < 0.80:
                 template = None
 
                 # Item loot rarity
-                if floor_encounter > 0.5 and floor_encounter <= 0.65:
-                    template = random.choice(common_items)
-                elif floor_encounter > 0.65 and floor_encounter <= 0.72:
-                    template = random.choice(rare_items)
-                elif floor_encounter > 0.72 and floor_encounter <= 0.75:
-                    template = random.choice(super_rare_items)
-                elif floor_encounter > 0.75 and floor_encounter < 0.77:
-                    template = random.choice(legendary_item)
+                if floor_encounter > 0.45 and floor_encounter <= 0.62:
+                    template = random.choice(common_items)  # 17%
+                elif floor_encounter > 0.62 and floor_encounter <= 0.72:
+                    template = random.choice(rare_items)  # 10%
+                elif floor_encounter > 0.72 and floor_encounter <= 0.77:
+                    template = random.choice(super_rare_items)  # 5%
+                elif floor_encounter > 0.77 and floor_encounter < 0.80:
+                    template = random.choice(legendary_item)  # 3%
 
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
@@ -352,39 +352,58 @@ def game():
                 else:
                     print(f"- {item.name}")
             print("")
-            use = input("Use wich item? : ").lower()
+            print("[z] Use, [x] Throw, [Enter] Close.")
             print("")
-            used = None
-            for item in player.inv:
-                if item.name.lower() == use:
-                    used = item
-            if used:
-                # Healing
-                if used.heal_amount > 0:
-                    if player.hp < 100:
-                        player.heal(used.heal_amount)
-                        print(
-                            f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
-                        player.inv.remove(used)
-                        sleep(1)
-                        player.update_hp()
-                        print(f"{player.name} HP is now {player.hp}.")
+            select = input("What are you going to do? : ")
+            print("")
+            if select == "z":
+                use = input("Use wich item? : ").lower()
+                print("")
+                used = None
+                for item in player.inv:
+                    if item.name.lower() == use:
+                        used = item
+                if used:
+                    # Healing
+                    if used.heal_amount > 0:
+                        if player.hp < 100:
+                            player.heal(used.heal_amount)
+                            print(
+                                f"{player.name} healed using {used.name} for {used.heal_amount} HP.")
+                            player.inv.remove(used)
+                            sleep(1)
+                            player.update_hp()
+                            print(f"{player.name} HP is now {player.hp}.")
+                        else:
+                            print("Your HP is full!")
+
+                    # Switch weapon
+                    elif used.atk > 0:
+                        player.equip(used)
+
+                    # Non-usable item
                     else:
-                        print("Your HP is full!")
-
-                # Switch weapon
-                elif used.atk > 0:
-                    player.equip(used)
-
-                # Non-usable item
+                        print("You can't use that item.")
+                elif use == "":
+                    print("Inventory closed.")
                 else:
-                    print("You can't use that item.")
-            elif use == "":
-                print("Inventory closed.")
+                    print(f"There's no {use} in your inventory.")
+            elif select == "x":
+                use = input("Throw wich item? : ").lower()
+                print("")
+                used = None
+                for item in player.inv:
+                    if item.name.lower() == use:
+                        used = item
+                if used:
+                    print(f"You throw the {used.name}.")
+                    player.inv.remove(used)
+                elif use == "":
+                    print("Inventory closed.")
+                else:
+                    print(f"There's no {use} in your inventory.")
             else:
-                print(f"There's no {use} in your inventory.")
-        else:
-            print("Invalid action.")
+                print("Inventory closed.")
 
         sleep(1)
 
