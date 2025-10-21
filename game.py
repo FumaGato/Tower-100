@@ -64,9 +64,9 @@ class Player(Character):
         if new_item:
             self.inv.append(new_item)
 
-    def theres_item(self, item):
+    def theres_item(self, new_item):
 
-        print(f"There's a {item.name} on the floor.")
+        print(f"There's a {new_item.name} on the floor.")
         sleep(1)
         print("")
         print("[z] Take, [Enter] Leave.")
@@ -74,11 +74,52 @@ class Player(Character):
         act = input("Choose an action: ")
         print("")
         if act == "z":
-            player.take_item(item)
-            print(
-                f"You took the {item.name}.")
-            sleep(1)
-            print(f"{item.name} added to inventory.")
+            if len(self.inv) < inv_cap:
+                player.take_item(new_item)
+                print(f"You took the {new_item.name}.")
+                sleep(1)
+                print(f"{new_item.name} added to inventory.")
+            else:
+                print("Inventory is full.")
+                sleep(1)
+                print("")
+                print("[z] Yes, [x] No.")
+                print("")
+                yes_no = input(
+                    "Do you want to throw an item in your inventory to give a free space?: ")
+                print("")
+                if yes_no == "z":
+                    print("--- Inventory ---")
+                    for item in player.inv:
+                        print(f"- {item.name}")
+                    while True:
+                        print("")
+                        use = input("Throw wich item? : ").lower()
+                        print("")
+                        used = None
+                        for item in player.inv:
+                            if item.name.lower() == use:
+                                used = item
+                        if used:
+                            print(f"You throw the {used.name}.")
+                            player.inv.remove(used)
+                            sleep(1)
+                            player.take_item(new_item)
+                            print(f"You took the {new_item.name}.")
+                            sleep(1)
+                            print(f"{new_item.name} added to inventory.")
+                            break
+                        elif use == "":
+                            print("Inventory closed.")
+                            break
+                        else:
+                            print(f"There's no {use} in your inventory.")
+                            break
+                elif yes_no == "x":
+                    print(f"You leave the {item.name}.")
+                else:
+                    print(
+                        f"You leave the {item.name}. (I don't want to write 'invalid action' code here because I'm lazy)")
         else:
             print(f"You leave the {item.name}.")
 
@@ -90,7 +131,7 @@ class Enemy(Character):
         super().__init__(name, hp, atk)
         self.desc = desc
 
-    def theres_item_enemy(self, item):
+    def theres_item_enemy(self, new_item):
 
         print(f"{self.name} drops a {item.name} on the floor.")
         sleep(1)
@@ -99,14 +140,53 @@ class Enemy(Character):
         print("")
         act = input("Choose an action: ")
         if act == "z":
-            player.take_item(item)
-            print("")
-            print(
-                f"You took the {item.name}.")
-            sleep(1)
-            print(f"{item.name} added to inventory.")
+            if len(self.inv) < inv_cap:
+                player.take_item(new_item)
+                print(f"You took the {new_item.name}.")
+                sleep(1)
+                print(f"{new_item.name} added to inventory.")
+            else:
+                print("Inventory is full.")
+                sleep(1)
+                print("")
+                print("[z] Yes, [x] No.")
+                print("")
+                yes_no = input(
+                    "Do you want to throw an item in your inventory to give a free space?: ")
+                print("")
+                if yes_no == "z":
+                    print("--- Inventory ---")
+                    for item in player.inv:
+                        print(f"- {item.name}")
+                    while True:
+                        print("")
+                        use = input("Throw wich item? : ").lower()
+                        print("")
+                        used = None
+                        for item in player.inv:
+                            if item.name.lower() == use:
+                                used = item
+                        if used:
+                            print(f"You throw the {used.name}.")
+                            player.inv.remove(used)
+                            sleep(1)
+                            player.take_item(new_item)
+                            print(f"You took the {new_item.name}.")
+                            sleep(1)
+                            print(f"{new_item.name} added to inventory.")
+                            break
+                        elif use == "":
+                            print("Inventory closed.")
+                            break
+                        else:
+                            print(f"There's no {use} in your inventory.")
+                            break
+                elif yes_no == "x":
+                    print(f"You leave the {item.name}.")
+                else:
+                    print(
+                        f"You leave the {item.name}. (I don't want to write 'invalid action' code here because I'm lazy (again))")
         else:
-            print("")
             print(f"You leave the {item.name}.")
         sleep(1)
 
@@ -303,7 +383,7 @@ def game():
         print("")
         act = input("Choose an action: ")
         print("")
-        if act == "":
+        if act != "c":
             player.floor += 1
             print(f"--- Floor {player.floor} ---")
             floor_encounter = random.random()
@@ -336,6 +416,7 @@ def game():
 
                 encounter = Item(
                     template.name, template.heal_amount, template.atk)
+
                 player.theres_item(encounter)
             else:
                 print("Nothing.")
@@ -480,6 +561,7 @@ player_name = input("Enter your name: ")
 player_inventory = [
     bread
 ]
+inv_cap = 12
 player = Player(player_name, 100, stick.atk, player_inventory, 0, 0)
 player.weapon = stick
 
